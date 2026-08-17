@@ -1,0 +1,342 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="canonical" href="https://mal-rater.danmat.workers.dev/" />
+		<meta name="robots" content="index, follow, max-image-preview:large" />
+		<title>MAL Rater — bulk-rate your MyAnimeList backlog, fast</title>
+		<meta
+			name="description"
+			content="Score all the anime you finished but never rated — a fast, keyboard-driven tool that saves each rating straight to MyAnimeList. Free and private; no signup beyond your MAL login."
+		/>
+		<meta
+			name="keywords"
+			content="MyAnimeList bulk rate, rate anime fast, MAL backlog, mass rate anime, score anime MyAnimeList, MAL rating tool, rate all my anime"
+		/>
+		<link
+			rel="icon"
+			href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><text y='14' font-size='14'>🎬</text></svg>"
+		/>
+		<meta property="og:type" content="website" />
+		<meta property="og:site_name" content="MAL Rater" />
+		<meta property="og:url" content="https://mal-rater.danmat.workers.dev/" />
+		<meta property="og:title" content="MAL Rater — bulk-rate your MyAnimeList backlog" />
+		<meta
+			property="og:description"
+			content="Rate everything you've finished but never scored — keyboard-fast, saves straight to MyAnimeList."
+		/>
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content="MAL Rater — bulk-rate your MyAnimeList backlog" />
+		<meta
+			name="twitter:description"
+			content="Rate everything you've finished but never scored — keyboard-fast, saves straight to MyAnimeList."
+		/>
+
+		<script type="application/ld+json">
+			{
+				"@context": "https://schema.org",
+				"@type": "WebApplication",
+				"name": "MAL Rater",
+				"url": "https://mal-rater.danmat.workers.dev/",
+				"description": "A fast, keyboard-driven tool to bulk-rate the anime you've finished but never scored on MyAnimeList. Each rating saves straight to your MAL account.",
+				"applicationCategory": "EntertainmentApplication",
+				"operatingSystem": "Any (web browser)",
+				"offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+				"isAccessibleForFree": true,
+				"featureList": [
+					"Bulk-rate your MyAnimeList backlog",
+					"Keyboard shortcuts (1–10) for speed",
+					"Saves ratings directly to MyAnimeList",
+					"Shows cover art, English title, synopsis and genres",
+					"No signup beyond your MAL login"
+				],
+				"creator": { "@type": "Person", "name": "Dan Matthew", "url": "https://github.com/DanMat" },
+				"inLanguage": "en"
+			}
+		</script>
+		<script type="application/ld+json">
+			{
+				"@context": "https://schema.org",
+				"@type": "FAQPage",
+				"mainEntity": [
+					{
+						"@type": "Question",
+						"name": "How can I quickly rate a lot of anime on MyAnimeList?",
+						"acceptedAnswer": {
+							"@type": "Answer",
+							"text": "Connect your MyAnimeList account and MAL Rater shows every completed-but-unrated anime one at a time with its cover and synopsis. Press 1–10 to score it — the rating saves to MAL and the next one appears instantly, so you can clear hundreds in minutes."
+						}
+					},
+					{
+						"@type": "Question",
+						"name": "Does it save ratings to my MyAnimeList account?",
+						"acceptedAnswer": {
+							"@type": "Answer",
+							"text": "Yes. You authorize through MyAnimeList's official OAuth login, and each score is written directly to your own list. It never sees your password."
+						}
+					},
+					{
+						"@type": "Question",
+						"name": "Is MAL Rater free and private?",
+						"acceptedAnswer": {
+							"@type": "Answer",
+							"text": "Completely free, no ads. It uses MyAnimeList's official login, writes only to your own list, and doesn't track you."
+						}
+					}
+				]
+			}
+		</script>
+		<script type="application/ld+json">
+			{
+				"@context": "https://schema.org",
+				"@type": "HowTo",
+				"name": "How to rate your MyAnimeList backlog fast",
+				"totalTime": "PT10M",
+				"step": [
+					{ "@type": "HowToStep", "name": "Connect", "text": "Sign in with your MyAnimeList account.", "url": "https://mal-rater.danmat.workers.dev/" },
+					{ "@type": "HowToStep", "name": "Load backlog", "text": "MAL Rater pulls everything you've completed but never scored.", "url": "https://mal-rater.danmat.workers.dev/" },
+					{ "@type": "HowToStep", "name": "Rate", "text": "Press 1–10 (or click) to score each anime; it saves to MAL and advances.", "url": "https://mal-rater.danmat.workers.dev/" }
+				]
+			}
+		</script>
+		<style>
+			:root {
+				--bg: #0e0f1a;
+				--panel: #171a2b;
+				--panel-2: #1e2236;
+				--line: #2b3050;
+				--ink: #eef0ff;
+				--muted: #9aa0c8;
+				--accent: #2e51ff;
+				--accent-2: #6d8bff;
+				--good: #46d19e;
+				--sans: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+			}
+			* { box-sizing: border-box; }
+			body {
+				margin: 0; min-height: 100vh; background: var(--bg); color: var(--ink);
+				font-family: var(--sans); line-height: 1.5;
+				display: flex; flex-direction: column; align-items: center;
+			}
+			a { color: var(--accent-2); }
+			.top {
+				width: 100%; max-width: 720px; display: flex; align-items: center;
+				justify-content: space-between; padding: 1rem 1.2rem; gap: 1rem;
+			}
+			.brand { font-weight: 800; letter-spacing: -0.02em; }
+			.brand span { color: var(--accent-2); }
+			.who { font-size: 0.85rem; color: var(--muted); }
+			.who a { margin-left: 0.6rem; }
+
+			.progress { width: 100%; max-width: 720px; padding: 0 1.2rem; }
+			.bar { height: 8px; background: var(--panel-2); border-radius: 5px; overflow: hidden; }
+			.bar > i { display: block; height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent-2)); width: 0; transition: width 0.25s; }
+			.pmeta { display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--muted); margin-top: 0.4rem; }
+
+			main { width: 100%; max-width: 720px; padding: 1rem 1.2rem 3rem; }
+
+			/* connect screen */
+			.connect { text-align: center; padding: 4rem 1rem; }
+			.connect h1 { font-size: 1.7rem; margin: 0 0 0.6rem; letter-spacing: -0.02em; }
+			.connect p { color: var(--muted); max-width: 44ch; margin: 0 auto 1.6rem; }
+			.btn {
+				display: inline-block; background: var(--accent); color: #fff; border: none;
+				font: inherit; font-weight: 700; padding: 0.7rem 1.4rem; border-radius: 10px;
+				cursor: pointer; text-decoration: none;
+			}
+			.btn:hover { background: #3a5cff; }
+
+			/* card */
+			.card { background: var(--panel); border: 1px solid var(--line); border-radius: 16px; overflow: hidden; }
+			.cover { display: flex; gap: 1rem; padding: 1rem; }
+			.cover img {
+				width: 130px; height: 185px; object-fit: cover; border-radius: 10px;
+				background: var(--panel-2); flex-shrink: 0;
+			}
+			.info h2 { margin: 0 0 0.2rem; font-size: 1.15rem; line-height: 1.25; letter-spacing: -0.01em; }
+			.info .en { color: var(--muted); font-size: 0.85rem; margin-bottom: 0.5rem; }
+			.tags { display: flex; flex-wrap: wrap; gap: 0.3rem; margin: 0.4rem 0; }
+			.tag { font-size: 0.68rem; color: var(--accent-2); border: 1px solid var(--line); border-radius: 999px; padding: 0.1rem 0.5rem; }
+			.syn { color: var(--muted); font-size: 0.85rem; margin: 0.5rem 0 0; }
+			.meta-line { font-size: 0.78rem; color: var(--muted); margin-top: 0.5rem; }
+			.meta-line b { color: var(--ink); }
+
+			.rate { padding: 0.4rem 1rem 1.1rem; }
+			.scale { display: grid; grid-template-columns: repeat(10, 1fr); gap: 0.4rem; }
+			.scale button {
+				font: inherit; font-weight: 700; font-size: 1rem; padding: 0.7rem 0; cursor: pointer;
+				background: var(--panel-2); color: var(--ink); border: 1px solid var(--line); border-radius: 9px;
+				transition: transform 0.08s, background 0.12s, border-color 0.12s;
+			}
+			.scale button:hover { background: var(--accent); border-color: var(--accent); transform: translateY(-2px); }
+			.scale button:nth-child(-n+3) { color: #ff9db1; }   /* 1-3 low */
+			.scale button:nth-child(n+9) { color: var(--good); } /* 9-10 high */
+			.actions { display: flex; justify-content: space-between; align-items: center; margin-top: 0.8rem; }
+			.skip { background: none; border: none; color: var(--muted); font: inherit; cursor: pointer; text-decoration: underline; }
+			.hint { font-size: 0.72rem; color: var(--muted); }
+			.hint b { color: var(--ink); }
+
+			.toast { position: fixed; bottom: 1.2rem; left: 50%; transform: translateX(-50%);
+				background: var(--good); color: #04241a; font-weight: 700; padding: 0.5rem 1rem; border-radius: 999px;
+				opacity: 0; transition: opacity 0.2s; font-size: 0.85rem; }
+			.toast.show { opacity: 1; }
+			.done { text-align: center; padding: 4rem 1rem; }
+			.done h1 { font-size: 1.6rem; }
+			.err { color: #ff9db1; font-size: 0.8rem; text-align: center; margin-top: 0.6rem; min-height: 1rem; }
+			.loading { color: var(--muted); text-align: center; padding: 3rem; }
+		</style>
+	</head>
+	<body>
+		<noscript>
+			<div style="max-width: 640px; margin: 3rem auto; padding: 0 1.25rem; font-family: system-ui, sans-serif; line-height: 1.6; color: #eef0ff;">
+				<h1>MAL Rater — bulk-rate your MyAnimeList backlog</h1>
+				<p>
+					A free, keyboard-fast tool to score the anime you've finished but never rated on
+					<strong>MyAnimeList</strong>. Connect your MAL account and it shows each unrated anime with its
+					cover and synopsis — press <strong>1–10</strong> to rate, and it saves straight to your list and
+					jumps to the next. Clear a backlog of hundreds in minutes.
+				</p>
+				<p>MAL Rater needs JavaScript — please enable it and reload.</p>
+			</div>
+		</noscript>
+		<div class="top">
+			<div class="brand">MAL<span>Rater</span></div>
+			<div class="who" id="who"></div>
+		</div>
+		<div class="progress" id="progressWrap" hidden>
+			<div class="bar"><i id="barFill"></i></div>
+			<div class="pmeta"><span id="pDone">0 rated this session</span><span id="pLeft"></span></div>
+		</div>
+		<main id="app"><div class="loading">Loading…</div></main>
+		<div class="toast" id="toast"></div>
+
+		<script>
+			const $ = (id) => document.getElementById(id);
+			const app = $('app');
+			const LS = 'malrater-done'; // ids rated or skipped locally
+			let queue = [], done = new Set(JSON.parse(localStorage.getItem(LS) || '[]')), idx = 0, ratedCount = 0;
+
+			const saveDone = () => localStorage.setItem(LS, JSON.stringify([...done]));
+
+			function toast(msg) {
+				const t = $('toast'); t.textContent = msg; t.classList.add('show');
+				clearTimeout(t._t); t._t = setTimeout(() => t.classList.remove('show'), 900);
+			}
+
+			async function boot() {
+				const me = await fetch('/api/me').then((r) => r.json()).catch(() => ({ authed: false }));
+				if (!me.authed) return renderConnect();
+				$('who').innerHTML = `${me.name} · <a href="/oauth/logout">sign out</a>`;
+				app.innerHTML = '<div class="loading">Loading your backlog from MyAnimeList…</div>';
+				const qr = await fetch('/api/queue').then((r) => r.json()).catch(() => ({ queue: [] }));
+				queue = (qr.queue || []).filter((a) => !done.has(a.id));
+				$('progressWrap').hidden = false;
+				next();
+			}
+
+			function renderConnect() {
+				app.innerHTML = `
+					<div class="connect">
+						<h1>Score your anime backlog 🎌</h1>
+						<p>Connect your MyAnimeList account, then rate everything you've finished but never scored. Each rating saves straight to MAL and the card disappears.</p>
+						<a class="btn" href="/oauth/login">Connect MyAnimeList</a>
+					</div>`;
+			}
+
+			function updateProgress() {
+				const total = done.size + queue.length; // rough denominator
+				const pct = total ? (done.size / total) * 100 : 0;
+				$('barFill').style.width = pct + '%';
+				$('pDone').textContent = `${ratedCount} rated this session`;
+				$('pLeft').textContent = `${queue.length - idx} left`;
+			}
+
+			async function next() {
+				updateProgress();
+				if (idx >= queue.length) return renderDone();
+				const a = queue[idx];
+				app.innerHTML = `<div class="loading">Loading “${a.title}”…</div>`;
+				let d = {};
+				try { d = await fetch('/api/anime/' + a.id).then((r) => r.json()); } catch {}
+				renderCard(a, d);
+				prefetch(idx + 1);
+			}
+
+			function prefetch(i) { if (queue[i]) fetch('/api/anime/' + queue[i].id).catch(() => {}); }
+
+			function renderCard(a, d) {
+				const romaji = d.title || a.title;
+				const en = d.title_en;
+				const main = en || romaji;                        // English name up top when we have it
+				const sub = en && romaji && romaji !== en ? romaji : '';
+				const img = d.image || '';
+				const tags = [...(d.genres || []).slice(0, 3), ...(d.studios || []).slice(0, 1)];
+				app.innerHTML = `
+					<div class="card">
+						<div class="cover">
+							${img ? `<img src="${img}" alt="" loading="eager" />` : `<div style="width:130px;height:185px;border-radius:10px;background:var(--panel-2)"></div>`}
+							<div class="info">
+								<h2>${escapeHtml(main)}</h2>
+								${sub ? `<div class="en">${escapeHtml(sub)}</div>` : ''}
+								<div class="tags">${tags.map((t) => `<span class="tag">${escapeHtml(t)}</span>`).join('')}</div>
+								<div class="meta-line">${[d.type || a.type, (d.episodes || a.eps) ? (d.episodes || a.eps) + ' eps' : '', d.year || '', d.community ? '★ ' + d.community + ' MAL' : ''].filter(Boolean).join(' · ')}</div>
+								<p class="syn">${escapeHtml(d.synopsis || '')}${d.synopsis ? '…' : ''}</p>
+							</div>
+						</div>
+						<div class="rate">
+							<div class="scale">${[1,2,3,4,5,6,7,8,9,10].map((n) => `<button data-score="${n}">${n}</button>`).join('')}</div>
+							<div class="actions">
+								<span class="hint">Press <b>1–9</b> or <b>0</b> for 10 · <b>S</b> to skip</span>
+								<button class="skip" id="skipBtn">Skip / haven't rated →</button>
+							</div>
+							<div class="err" id="err"></div>
+						</div>
+					</div>`;
+				app.querySelectorAll('.scale button').forEach((b) =>
+					b.addEventListener('click', () => rate(a, +b.dataset.score)),
+				);
+				$('skipBtn').addEventListener('click', () => skip(a));
+			}
+
+			async function rate(a, score) {
+				$('err') && ($('err').textContent = '');
+				try {
+					const r = await fetch('/api/rate', {
+						method: 'POST', headers: { 'Content-Type': 'application/json' },
+						body: JSON.stringify({ id: a.id, score }),
+					});
+					const j = await r.json();
+					if (!r.ok || !j.ok) throw new Error(j.error || 'failed');
+					done.add(a.id); saveDone(); ratedCount++; idx++;
+					toast('Saved ' + score + '/10 ✓');
+					next();
+				} catch (e) {
+					if ($('err')) $('err').textContent = 'Could not save — ' + e.message;
+				}
+			}
+
+			function skip(a) { done.add(a.id); saveDone(); idx++; next(); }
+
+			function renderDone() {
+				$('progressWrap').hidden = true;
+				app.innerHTML = `<div class="done"><h1>That's the backlog 🎉</h1><p style="color:var(--muted)">You rated <b>${ratedCount}</b> this session — all saved to MyAnimeList.</p><a class="btn" href="/oauth/logout">Sign out</a></div>`;
+			}
+
+			function escapeHtml(s) {
+				return String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
+			}
+
+			// keyboard: 1-9 = score, 0 = 10, s / → = skip
+			addEventListener('keydown', (e) => {
+				if (idx >= queue.length) return;
+				const a = queue[idx]; if (!a) return;
+				if (e.key >= '1' && e.key <= '9') rate(a, +e.key);
+				else if (e.key === '0') rate(a, 10);
+				else if (e.key.toLowerCase() === 's' || e.key === 'ArrowRight') skip(a);
+			});
+
+			boot();
+		</script>
+	</body>
+</html>
