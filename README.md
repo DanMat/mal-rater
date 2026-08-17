@@ -7,6 +7,8 @@ next. Clear a backlog of hundreds in minutes.
 
 **Live:** https://mal-rater.danmat.workers.dev
 
+<p align="center"><img src="docs/preview.svg" width="300" alt="MAL Rater on mobile — rating an anime card with 1–10 buttons" /></p>
+
 - ⌨️ **Keyboard-first** — `1`–`9` to score, `0` for 10, `S` to skip. Auto-advances.
 - 🔒 **Official MAL OAuth** — you log in on MyAnimeList; it never sees your password and
   writes only to your own list.
